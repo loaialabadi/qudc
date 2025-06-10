@@ -1,0 +1,1089 @@
+/* hom///////////////////////////////////////////////// */
+body {
+    width: 97%;
+    margin: 2%;
+    background-image: url('../images/pexels-edward-jenner-4252520.jpg');
+    /* background-color: rgb(224, 237, 232); */
+}
+
+.home-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    position: relative;
+    animation: fadeInHeader 1s ease-out;
+    /* تأثير ظهور الهيدر */
+}
+
+/* أنميشن Fade In للهيدر */
+@keyframes fadeInHeader {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تنسيق عنوان الهيدر */
+.home-title {
+    font-size: 40px;
+    margin: 0;
+    font-weight: bold;
+    animation: fadeInTitle 2s ease-out;
+    /* تأثير ظهور العنوان */
+}
+
+/* أنميشن Fade In للعنوان */
+@keyframes fadeInTitle {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تنسيق شريط التنقل */
+.home-nav {
+    margin-top: 20px;
+    animation: slideInNav 1s ease-out;
+    /* تأثير دخول قائمة التنقل */
+}
+
+/* أنميشن Slide In للقائمة */
+@keyframes slideInNav {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.home-nav-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.home-nav-item {
+    font-size: 18px;
+}
+
+.home-nav-item a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.3s;
+    position: relative;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* تأثير التكبير عند التمرير */
+.home-nav-item a:hover {
+    background-color: #f39c12;
+    transform: scale(1.1);
+    /* تكبير الرابط */
+}
+
+/* تأثير اللمعان عند التمرير على الرابط */
+.home-nav-item a:active {
+    box-shadow: 0 0 15px rgba(243, 156, 18, 0.8);
+    /* تأثير اللمعان */
+}
+
+/* تنسيق زر تسجيل الخروج */
+.home-logout-form {
+    margin-top: 20px;
+}
+
+.home-logout-button {
+    background-color: #833ce7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+/* تأثير عند التفاعل مع زر تسجيل الخروج */
+.home-logout-button:hover {
+    background-color: #c0392b;
+    transform: scale(1.1);
+    /* تكبير الزر عند التمرير */
+}
+
+/* تنسيق المحتوى الرئيسي */
+.home-main-content {
+    margin-top: 40px;
+    animation: fadeInMainContent 2s ease-out;
+    /* تأثير دخول المحتوى الرئيسي */
+}
+
+/* أنميشن Fade In للمحتوى */
+@keyframes fadeInMainContent {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* استعلامات وسائط للموبايل */
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 30px;
+        /* تقليل حجم العنوان على الشاشات الأصغر */
+    }
+
+    .home-nav-list {
+        flex-direction: column;
+        /* تحويل القائمة من أفقي إلى عمودي */
+        gap: 15px;
+    }
+
+    .home-nav-item a {
+        font-size: 18px;
+        /* تقليل حجم الخط في الروابط */
+        padding: 8px 12px;
+        /* تقليل الحشوات */
+    }
+
+    .home-logout-button {
+        padding: 8px 15px;
+        font-size: 14px;
+        /* تقليل حجم الزر */
+    }
+
+    .home-main-content {
+        margin-top: 20px;
+        /* تقليل المسافة العلوية للمحتوى */
+    }
+}
+
+@media (max-width: 480px) {
+    .home-title {
+        font-size: 24px;
+        /* تقليل حجم العنوان على الشاشات الصغيرة */
+    }
+
+    .home-nav-list {
+        gap: 10px;
+        /* تقليل المسافة بين العناصر في القائمة */
+    }
+
+    .home-nav-item a {
+        font-size: 16px;
+        /* تقليل حجم الخط في الروابط أكثر */
+        padding: 6px 10px;
+        /* تقليل الحشوات أكثر */
+    }
+
+    .home-logout-button {
+        padding: 6px 12px;
+        font-size: 14px;
+        /* تقليل حجم الزر أكثر */
+    }
+
+    .home-main-content {
+        margin-top: 15px;
+        /* تقليل المسافة العلوية للمحتوى أكثر */
+    }
+
+    .home-header {
+        padding: 15px;
+        /* تقليل الحشوات في الهيدر */
+    }
+}
+
+/* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\صفحه النظم\\\\\\\\\\\\\\\\ */
+
+/* تنسيق الجدول الذي يحمل الكلاس "page-system" */
+.page-system {
+    width: 100%;
+    /* تأكد من أن الجدول يمتد على كامل عرض الشاشة */
+    border-collapse: collapse;
+    /* لجعل الحدود تلتقي ببعضها */
+    text-align: center;
+    /* محاذاة النص في الوسط */
+    direction: rtl;
+    /* محاذاة النص من اليمين لليسار */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* تحديد الخط */
+    margin: 20px 0;
+    /* إضافة مسافة من الأعلى والأسفل */
+    border-radius: 8px;
+    /* إضافة تقويس الزوايا للجدول */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* إضافة ظل ناعم للجدول */
+    table-layout: fixed;
+    /* تأكد من أن العرض سيكون ثابتًا بالنسبة لجميع الأعمدة */
+    overflow-x: auto;
+    /* السماح بتمرير الجدول أفقيًا إذا كانت الأعمدة أكثر من العرض */
+}
+
+/* تنسيق رأس الجدول */
+.page-system th {
+    background: linear-gradient(135deg, #4CAF50, #3b8d40);
+    /* تدرج لوني من الأخضر */
+    color: white;
+    /* لون النص أبيض */
+    padding: 12px 18px;
+    /* مسافة padding حول النص */
+    font-size: 16px;
+    /* حجم الخط */
+    font-weight: bold;
+    /* جعل النص غامق */
+    text-align: center;
+    /* محاذاة النص في الوسط */
+    border-top-left-radius: 8px;
+    /* تقويس الزاوية العليا اليسرى */
+    border-top-right-radius: 8px;
+    /* تقويس الزاوية العليا اليمنى */
+}
+
+/* تنسيق الخلايا */
+.page-system td {
+    padding: 12px 18px;
+    /* زيادة المسافة داخل الخلايا */
+    border: 1px solid #ddd;
+    /* لون الحدود باللون الرمادي الفاتح */
+    background-color: #ffffff;
+    /* خلفية بيضاء */
+    transition: background-color 0.3s ease-in-out;
+    /* تأثير سلاسة عند التمرير */
+    word-wrap: break-word;
+    /* كسر النص داخل الخلايا إذا كان طويلًا جدًا */
+}
+
+/* تغيير اللون عند التمرير فوق الصفوف */
+.page-system tr:nth-child(even) {
+    background-color: #f9f9f9;
+    /* لون خلفية الصفوف الزوجية */
+}
+
+/* تغيير اللون عند التمرير على الصف */
+.page-system tr:hover {
+    background-color: #f0f0f0;
+    /* تغيير اللون عند التمرير */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* تأثير ظل خفيف عند التمرير */
+}
+
+/* تنسيق الأزرار */
+.page-system input[type="submit"] {
+    padding: 10px 20px;
+    /* زيادة المسافة داخل الأزرار */
+    background-color: #4CAF50;
+    color: white;
+    /* نص الزر باللون الأبيض */
+    border: none;
+    border-radius: 5px;
+    /* تقويس الزوايا */
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    /* جعل النص غامق */
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+    /* إضافة تأثيرات التحول */
+    max-width: 200px;
+    /* الحد الأقصى لعرض الأزرار */
+    width: 100%;
+    /* السماح للأزرار بأن تمتد على عرض الخلية بالكامل */
+}
+
+/* تغيير لون الأزرار عند التمرير */
+.page-system input[type="submit"]:hover {
+    background-color: #45a049;
+    /* تغيير لون الخلفية عند التمرير */
+    transform: translateY(-2px);
+    /* تحريك الزر للأعلى قليلاً */
+}
+
+/* تنسيق الحقول النصية */
+.page-system input[type="text"] {
+    padding: 10px;
+    width: 120px;
+    /* زيادة عرض الحقل النصي */
+    border: 1px solid #ccc;
+    /* حدود خفيفة */
+    border-radius: 5px;
+    /* تقويس الحواف */
+    font-size: 14px;
+    box-sizing: border-box;
+    /* التأكد من أن الحجم يشمل الـ padding */
+    transition: border-color 0.3s ease;
+    /* إضافة تأثير على تغير الحدود */
+}
+
+/* تنسيق الرسالة عند عدم وجود بيانات */
+.no-data {
+    text-align: center;
+    font-size: 18px;
+    color: #888;
+    font-style: italic;
+    /* إضافة تنسيق مائل للخط */
+    padding: 20px;
+    background-color: #f9f9f9;
+    /* خلفية خفيفة */
+    border-radius: 8px;
+    /* تقويس الزوايا */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* إضافة ظل خفيف */
+}
+
+/* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\صفحه الحسابات  ظ\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ */
+/* تنسيق الحاويات الرئيسية */
+/* إعادة تصميم الصفحة لتكون أكثر سهولة وجاذبية */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* رأس الصفحة */
+h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* تنسيق الحقول */
+label {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+input[type="submit"],
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover,
+button:hover {
+    background-color: #45a049;
+}
+
+/* تنسيق الجداول */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th,
+table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-size: 16px;
+}
+
+table td {
+    color: #555;
+}
+
+/* تنسيق الأزرار الخاصة بحالة الطلب */
+.btn-secondary {
+    background-color: #ff9800;
+    border: none;
+    padding: 8px 16px;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-secondary:hover {
+    background-color: #e68900;
+}
+
+/* تنسيق الحقول فقط للعرض */
+.display-only {
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 8px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+/* تنسيق لأدوات الإدخال الخدمية */
+.service-options {
+    display: flex;
+    flex-wrap: wrap;
+    /* يسمح بالانتقال للسطر التالي إذا لم يكن هناك مساحة كافية */
+    gap: 10px;
+    /* المسافة بين العناصر */
+    margin-bottom: 20px;
+}
+
+.service-options input {
+    margin-right: 10px;
+    /* مسافة بين كل عنصر وآخر */
+    transform: scale(1.1);
+    /* زيادة حجم العناصر قليلاً */
+}
+
+/* تنسيق الجداول في الحقول */
+input[type="text"].result,
+input[type="text"].total-result {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-weight: bold;
+    color: #333;
+}
+
+.total-words {
+    text-align: right;
+    font-size: 16px;
+    color: #333;
+}
+
+/* إضافة تنسيق للأزرار عند الطباعة */
+.print-button {
+    margin-top: 20px;
+    background-color: #2196F3;
+    padding: 12px 24px;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.print-button:hover {
+    background-color: #1976D2;
+}
+
+/* تنسيق العروض الجداول */
+.table-container {
+    margin-top: 30px;
+    overflow-x: auto;
+}
+
+.table-container table {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.table-container table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* تنسيق الحقول في الاستمارة */
+.account input,
+.account select,
+.account button {
+    font-size: 14px;
+}
+
+/* استجابة للهواتف المحمولة */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .service-options {
+        grid-template-columns: 1fr;
+    }
+
+    .col-4,
+    .col-3,
+    .col-12 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .btn-secondary,
+    .print-button,
+    input[type="submit"] {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+
+
+
+/* زر استلام من خدمة العملاء (حالة 2) */
+.status-2 {
+    background-color: #007bff;
+    /* اللون الأزرق */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.status-2:active {
+    background-color: #0056b3;
+    /* اللون الأزرق الداكن عند الضغط */
+}
+
+/* زر تسليم للعمل الميداني (حالة 3) */
+.status-3 {
+    background-color: #28a745;
+    /* اللون الأخضر */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.status-3:active {
+    background-color: #218838;
+    /* اللون الأخضر الداكن عند الضغط */
+}
+
+/* يمكن إضافة المزيد من التأثيرات مثل إضافة ظل أو تغيير الحجم */
+.status-2:focus,
+.status-3:focus {
+    outline: none;
+    /* إزالة الإطار الافتراضي عند التركيز */
+}
+
+/* \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\صفحه خدمه العملاء\\\\\\\\\\\\\\\\\\ */
+
+/* General styles */
+/* body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+} */
+.page-title {
+    text-align: center;
+    margin-top: 20px;
+    color: #4c6baf;
+}
+
+.customer-form-container {
+    width: 95%;
+    margin: auto;
+    padding: 20px;
+    /* background-color: rgb(197, 209, 180); */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    width: 23%;
+    margin: 10px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-input-warning {
+    background-color: #FFEB3B;
+}
+
+.form-select {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #f4f4f4;
+}
+
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+
+.btn-search,
+.btn-action {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-search:hover,
+.btn-action:hover {
+    background-color: #0056b3;
+}
+
+.table-responsive {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table-responsive th,
+.table-responsive td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.table-responsive th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* استعلامات وسائط للموبايل */
+@media (max-width: 768px) {
+    .form-group {
+        width: 48%;
+        margin: 5px;
+    }
+
+    .btn-submit {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+
+    .btn-search,
+    .btn-action {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .table-responsive th,
+    .table-responsive td {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-group {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .form-input,
+    .form-select {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .btn-submit {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .btn-search,
+    .btn-action {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+
+    .table-responsive th,
+    .table-responsive td {
+        padding: 6px;
+    }
+}
+
+/*\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ العمل الميداني\\\\\\\\\\\\\\\\ */
+
+/* تنسيق الكلاسات "work" */
+/* .work {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+} */
+
+.work.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.work table {
+    width: 98%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.work th,
+.work td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.work th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.work td {
+    background-color: #f9f9f9;
+}
+
+.work tr:nth-child(even) {
+    background-color: #f1f1f1;
+}
+
+.work input[type="submit"],
+.work.export-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.work input[type="submit"]:hover,
+.work.export-btn:hover {
+    background-color: #45a049;
+}
+
+.work input[type="date"],
+.work select {
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.work input[type="date"]:focus,
+.work select:focus {
+    border-color: #4CAF50;
+}
+
+.work h3.text-primary {
+    color: #0066cc;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.work h2 {
+    color: #333;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.work.container {
+    width: 100%;
+    height: 20%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.work.row {
+    margin-bottom: 15px;
+}
+
+.work.col-4,
+.work.col-2 {
+    padding: 10px;
+}
+
+.work.col-12 {
+    padding: 10px;
+}
+
+.work p {
+    font-size: 16px;
+    color: #666;
+}
+
+@media print {
+    .work {
+        font-size: 12px;
+    }
+
+    .work.table-container {
+        width: 100%;
+    }
+
+    .work.export-btn,
+    .work input[type="submit"] {
+        display: none;
+    }
+}
+
+/* \\\\\\\\\\\\\\\\\\\\\\\\\ صفحه الاستعلامات\\\\\\\\\\\\\ */
+
+/* تنسيق للنموذج البحث */
+.inquiry {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.inquiry form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+}
+
+.inquiry label {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.inquiry input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.inquiry input[type="submit"] {
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.inquiry input[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* تنسيق للنتائج */
+.inquiry-results {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.inquiry-results h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.display-status {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    table-layout: fixed;
+}
+
+.display-status th,
+.display-status td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.display-status th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.display-status tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.display-status td {
+    word-wrap: break-word;
+    max-width: 150px;
+}
+
+/* \\\\\\\\\\\\\\\\\\\\\\\\\\\بدايه صفحه التسليم \\\\\\\\\\\\\\\\\\\\\\\ */
+/* تنسيق النموذج */
+.delivery-form {
+    background-color: #f4f4f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.delivery-form h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.delivery-form .delivery-filter {
+    margin-bottom: 15px;
+}
+
+.delivery-form .delivery-filter label {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.delivery-form select,
+.delivery-form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.delivery-form input[type="submit"] {
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.delivery-form input[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+/* تنسيق الجدول */
+.delivery-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 1em;
+    text-align: left;
+}
+
+.delivery-table th,
+.delivery-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.delivery-table th {
+    background-color: #f2f2f2;
+    color: #333;
+}
+
+.delivery-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.delivery-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.delivery-table td {
+    color: #555;
+}
+
+.delivery-table .delivery-button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #0275d8;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delivery-table .delivery-button:hover {
+    background-color: #0056b3;
+}
+
+/* تنسيق الرسالة عند عدم وجود سجلات */
+.delivery-message {
+    text-align: center;
+    font-size: 1.2em;
+    color: #f44336;
+    padding: 20px;
+}
+
+/* \\\\\\\\\\\\\\\\\\\\\\\\\\\نهايه صفحه التسليم \\\\\\\\\\\\\\\\\\\\\\\ */

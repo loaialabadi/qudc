@@ -1,0 +1,552 @@
+    <?php
+
+    require "connect.php";
+    require "home_page.php";
+
+    // جلب آخر معرف (ID) من قاعدة البيانات
+    $stmt = $conn->prepare("SELECT MAX(id) AS max_id FROM information");
+    $stmt->execute();
+    $lastId = $stmt->fetch(PDO::FETCH_ASSOC);
+    $newId = $lastId['max_id'] + 1; // إذا كان يوجد أي ID، أضف 1 إليه
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
+    // تأكد من وجود المجلدات
+    $uploadsDir = "uploads/";
+
+    if (!is_dir($uploadsDir)) {
+        mkdir($uploadsDir, 0777, true);
+    }
+
+    // إدخال البيانات
+    if (isset($_POST['send'])) {
+        $customer_name = htmlspecialchars(trim($_POST['customer_name'] ?? ''));
+        $Applicant_name = htmlspecialchars(trim($_POST['Applicant_name'] ?? ''));
+        $his_description = htmlspecialchars(trim($_POST['his_description'] ?? ''));
+        $request_type = htmlspecialchars(trim($_POST['request_type'] ?? ''));
+        $address = htmlspecialchars(trim($_POST['address'] ?? ''));
+        $national_number = htmlspecialchars(trim($_POST['national_number'] ?? ''));
+        $phone_number = htmlspecialchars(trim($_POST['phone_number'] ?? ''));
+        $attachment_name = htmlspecialchars(trim($_POST['attachment_name'] ?? ''));
+        $center = htmlspecialchars(trim($_POST['center'] ?? ''));
+        $payment_method = htmlspecialchars(trim($_POST['payment_method'] ?? ''));
+        $payment_number = htmlspecialchars(trim($_POST['payment_number'] ?? ''));
+        $amount = htmlspecialchars(trim($_POST['amount'] ?? ''));
+        $entry_date = htmlspecialchars(trim($_POST['entry_date'] ?? ''));
+        $customer_rating = htmlspecialchars(trim($_POST['customer_rating'] ?? ''));
+        $status = htmlspecialchars(trim($_POST['status'] ?? ''));
+        $transaction_number = htmlspecialchars(trim($_POST['transaction_number'] ?? ''));
+        $the_space = htmlspecialchars(trim($_POST['the_space'] ?? ''));
+        $height = htmlspecialchars(trim($_POST['height'] ?? ''));
+
+     // إذا كانت قيمة status فارغة، تعيينها إلى '1'
+if (empty($status)) {
+    $status = '0';
+}
+        if (empty($customer_name)) {
+            echo "<script>alert('يرجى إدخال اسم العميل.');</script>";
+            exit; // إيقاف تنفيذ السكربت إذا لم يتم إدخال اسم العميل
+        }
+
+
+        if (empty($transaction_number)) {
+            $transaction_number = null; // تعيين NULL إذا لم يتم الإدخال
+        }
+
+       
+        // إدخال البيانات في قاعدة البيانات
+        $add = $conn->prepare("INSERT INTO information (customer_name, Applicant_name, his_description, request_type, address, national_number, phone_number, attachment_name, center, payment_method, payment_number, amount, entry_date, customer_rating, transaction_number, the_space, height) VALUES (:customer_name, :Applicant_name, :his_description, :request_type, :address, :national_number, :phone_number, :attachment_name, :center, :payment_method, :payment_number, :amount, :entry_date, :customer_rating, :transaction_number, :the_space, :height)");
+
+        // ربط القيم
+        $add->bindValue(':customer_name', $customer_name);
+        $add->bindValue(':Applicant_name', $Applicant_name);
+        $add->bindValue(':his_description', $his_description);
+        $add->bindValue(':request_type', $request_type);
+        $add->bindValue(':address', $address);
+        $add->bindValue(':national_number', $national_number);
+        $add->bindValue(':phone_number', $phone_number);
+        $add->bindValue(':attachment_name', $attachment_name);
+        $add->bindValue(':center', $center);
+        $add->bindValue(':payment_method', $payment_method);
+        $add->bindValue(':payment_number', $payment_number);
+        $add->bindValue(':amount', $amount);
+        $add->bindValue(':entry_date', $entry_date);
+        $add->bindValue(':customer_rating', $customer_rating);
+        $add->bindValue(':transaction_number', $transaction_number);
+        $add->bindValue(':the_space', $the_space);
+        $add->bindValue(':height', $height);
+
+
+
+        if ($add->execute()) {
+
+            echo "<script>alert(' تم الادخال .');</script>";
+
+
+            $userId = $conn->lastInsertId();
+
+            // إنشاء مجلد خاص بالـ ID
+            $userDir = $uploadsDir . $userId . "_" . $customer_name . "/";
+            if (!is_dir($userDir)) {
+                if (mkdir($userDir, 0777, true)) {
+                    echo "<div>تم إنشاء المجلد بنجاح: $userDir</div>";
+                } else {
+                    echo "<div>فشل إنشاء المجلد.</div>";
+                    exit;
+                }
+            }
+
+
+            function createExcel($conn, $userId, $imagePath = '', $userDir)
+            {
+                require 'vendor/autoload.php'; // تأكد من أن مكتبة PhpSpreadsheet مثبتة
+
+                $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+                $sheet = $spreadsheet->getActiveSheet();
+
+                // إعداد عناوين الأعمدة
+                $sheet->setCellValue('A1', 'ID');
+                $sheet->setCellValue('B1', 'اسم العميل');
+                $sheet->setCellValue('C1', 'اسم المتقدم');
+                $sheet->setCellValue('D1', 'الوصف');
+                $sheet->setCellValue('E1', 'نوع الطلب');
+                $sheet->setCellValue('F1', 'العنوان');
+                $sheet->setCellValue('G1', 'الرقم الوطني');
+                $sheet->setCellValue('H1', 'رقم الهاتف');
+                $sheet->setCellValue('I1', 'اسم المرفق');
+                $sheet->setCellValue('J1', 'المركز');
+                $sheet->setCellValue('K1', 'طريقة الدفع');
+                $sheet->setCellValue('L1', 'رقم الدفع');
+                $sheet->setCellValue('M1', 'المبلغ');
+                $sheet->setCellValue('N1', 'تاريخ الشيك');
+                $sheet->setCellValue('O1', 'تقييم العميل');
+                $sheet->setCellValue('P1', 'تاريخ العمل');
+                $sheet->setCellValue('Q1', 'حالة');
+                $sheet->setCellValue('R1', 'صورة');
+                $sheet->setCellValue('S1', 'رقم المعامله');
+                $sheet->setCellValue('T1', 'المساحه');
+                $sheet->setCellValue('V1', 'الطول');
+
+
+
+                // الحصول على بيانات المستخدم
+                $stmt = $conn->prepare("SELECT * FROM information WHERE id = ?");
+                $stmt->execute([$userId]);
+                $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                // إضافة بيانات المستخدم إلى ملف Excel
+                if ($data) {
+                    $sheet->setCellValue('A2', $data['id']);
+                    $sheet->setCellValue('B2', $data['customer_name']);
+                    $sheet->setCellValue('C2', $data['Applicant_name']);
+                    $sheet->setCellValue('D2', $data['his_description']);
+                    $sheet->setCellValue('E2', $data['request_type']);
+                    $sheet->setCellValue('F2', $data['address']);
+                    $sheet->setCellValue('G2', $data['national_number']);
+                    $sheet->setCellValue('H2', $data['phone_number']);
+                    $sheet->setCellValue('I2', $data['attachment_name']);
+                    $sheet->setCellValue('J2', $data['center']);
+                    $sheet->setCellValue('K2', $data['payment_method']);
+                    $sheet->setCellValue('L2', $data['payment_number']);
+                    $sheet->setCellValue('M2', $data['amount']);
+                    $sheet->setCellValue('N2', $data['entry_date']);
+                    $sheet->setCellValue('O2', $data['customer_rating']);
+                    $sheet->setCellValue('Q2', $data['status']);
+                    $sheet->setCellValue('R2', $imagePath) ;// تضمين مسار الصورة
+                    $sheet->setCellValue('S2', $data['transaction_number']);
+                    $sheet->setCellValue('T2', $data['the_space']);
+                    $sheet->setCellValue('V2', $data['height']);
+
+
+
+                    if ($imagePath) {
+                        $sheet->setCellValue('R2', $imagePath); // تضمين مسار الصورة
+                    } else {
+                        $sheet->setCellValue('R2', 'لا توجد صورة'); // قيمة افتراضية
+                    }
+                }
+
+
+
+                // حفظ ملف Excel في المجلد الخاص بالـ ID
+                $excel_file = $userDir . "user_data_$userId.xlsx";
+                $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+                $writer->save($excel_file);
+            }
+
+
+
+            if (isset($_FILES['images'])) {
+                $images = $_FILES['images'];
+
+                if (is_array($images['tmp_name'])) {
+                    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                    $imageUploaded = false;
+
+                    foreach ($images['tmp_name'] as $key => $tmpName) {
+                        if ($images['error'][$key] == UPLOAD_ERR_OK) {
+                            if (in_array($images['type'][$key], $allowedTypes)) {
+                                $file_name = basename($images['name'][$key]);
+                                $target_file = $userDir . $file_name;
+
+                                if (move_uploaded_file($tmpName, $target_file)) {
+                                    $imageUploaded = true;
+                                    createExcel($conn, $userId, $target_file, $userDir);
+                                } else {
+                                    echo "<div>فشل رفع الصورة: $file_name.</div>";
+                                }
+                            } else {
+                                echo "<div>يرجى تحميل صورة بتنسيق JPEG أو PNG أو GIF.</div>";
+                            }
+                        } else {
+                            echo "<div>حدث خطأ أثناء رفع الصورة: " . $images['error'][$key] . "</div>";
+                        }
+                    }
+
+                    // إذا لم يتم رفع أي صورة، قم بإنشاء ملف Excel بدون صورة
+                    if (!$imageUploaded) {
+                        createExcel($conn, $userId, '', $userDir);
+                    }
+                }
+            } else {
+                echo "<div>لم يتم رفع أي صور. يرجى التأكد من تحديد ملفات.</div>";
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+    // جلب البيانات من جدول information التي لم يتم تمريرها
+    $stmt = $conn->prepare("SELECT * FROM information WHERE status = 1 ORDER BY id");
+    $stmt->execute();
+    $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // إذا تم الضغط على زر تغيير الحالة
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $id_to_update = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
+        if ($id_to_update) {
+            // جلب القيمة الحالية
+            $stmt = $conn->prepare("SELECT status FROM information WHERE id = :id");
+            $stmt->bindParam(':id', $id_to_update);
+            $stmt->execute();
+            $current_status = $stmt->fetchColumn();
+
+            // تحديث القيمة (0-5)
+            $new_status = ($current_status + 1);
+
+            // تحديث العمود status في جدول information
+            $update = $conn->prepare("UPDATE information SET status = :new_status WHERE id = :id");
+            $update->bindValue(':new_status', $new_status);
+            $update->bindValue(':id', $id_to_update);
+            $update->execute();
+
+            // إعادة توجيه بعد التحديث
+            header("Location: " . $_SERVER['PHP_SELF']);
+            exit;
+        }
+    }
+
+
+
+
+
+
+    $currentRecord = [];
+    $recordDisplayed = false; // متغير لتتبع ما إذا تم عرض السجل
+
+    if (isset($_POST['search'])) {
+        $id_to_search = filter_input(INPUT_POST, 'id_to_search', FILTER_VALIDATE_INT);
+
+        if ($id_to_search) {
+            // استعلام قاعدة البيانات لاسترجاع السجل بناءً على ID
+            $stmt = $conn->prepare("SELECT * FROM information WHERE id = :id");
+            $stmt->bindParam(':id', $id_to_search);
+            $stmt->execute();
+            
+            $currentRecord = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($currentRecord) {
+                // إنشاء رابط لتمرير البيانات إلى صفحة جديدة
+                $query = http_build_query($currentRecord); // تحويل المصفوفة إلى سلسلة استعلام
+                echo '<a href="measurement.php?' . $query . '" target="_blank" class="btn btn-success btn-lg" >طباعة السجل</a>';
+        echo "<br>";
+                echo '<a href="print_comparison.php?' . $query . '" target="_blank" class="btn btn-success btn-lg" >طباعة الراي الفني</a>';
+
+            } else {
+                echo "<div>لا يوجد سجل بهذا المعرف.</div>";
+            }
+        } else {
+            echo "<div>الرجاء إدخال ID صحيح.</div>";
+        }
+    }
+
+
+
+
+    ?>
+    <!DOCTYPE html>
+    <html lang="ar">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>إدارة البيانات</title>
+
+
+
+
+    </head>
+
+    <body>
+        <h3>إضافة بيانات</h3>
+
+
+
+        <div class="container mt-5">
+    <div class="container mt-5">
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data">
+            <!-- صف 1: رقم الطلب واسم العميل واسم مقدم الطلب -->
+            <div class="row">
+                <div class="col-md-3 form-group mb-3">
+                    <label>رقم طلب المركز:</label>
+                    <input class="form-control bg-warning w-100" type="number" name="id" value="<?php echo htmlspecialchars($currentRecord['id'] ?? $newId); ?>" readonly>
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>اسم العميل:</label>
+                    <input class="form-control" type="text" name="customer_name" value="<?php echo htmlspecialchars($currentRecord['customer_name'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>اسم مقدم الطلب:</label>
+                    <input class="form-control" type="text" name="Applicant_name" value="<?php echo htmlspecialchars($currentRecord['Applicant_name'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>صفة مقدم الطلب:</label>
+                    <input class="form-control" type="text" name="his_description" value="<?php echo htmlspecialchars($currentRecord['his_description'] ?? ''); ?>">
+                </div>
+            </div>
+
+            <!-- صف 2: نوع الطلب والعنوان والرقم القومي ورقم الهاتف -->
+            <div class="row">
+                <div class="col-md-3 form-group mb-3">
+                    <label>نوع الطلب:</label>
+                    <select class="form-select form-control-lg shadow-sm" name="request_type">
+                        <option value="">اختر نوع الطلب</option>
+                        <option value="رفع مساحي" <?php if (isset($currentRecord['request_type']) && $currentRecord['request_type'] == "رفع مساحي") echo 'selected'; ?>>رفع مساحي</option>
+                        <option value="كشف مرافق" <?php if (isset($currentRecord['request_type']) && $currentRecord['request_type'] == "كشف مرافق") echo 'selected'; ?>>كشف مرافق</option>
+                        <option value="اخري" <?php if (isset($currentRecord['request_type']) && $currentRecord['request_type'] == "اخري") echo 'selected'; ?>>اخري</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>عنوان العمل:</label>
+                    <input class="form-control" type="text" name="address" value="<?php echo htmlspecialchars($currentRecord['address'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>الرقم القومي:</label>
+                    <input class="form-control" type="text" name="national_number" value="<?php echo htmlspecialchars($currentRecord['national_number'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>رقم الهاتف:</label>
+                    <input class="form-control" type="text" name="phone_number" value="<?php echo htmlspecialchars($currentRecord['phone_number'] ?? ''); ?>">
+                </div>
+            </div>
+
+            <!-- صف 3: اسم المرفق والمركز وطريقة الدفع ورقم الدفع -->
+            <div class="row">
+                <div class="col-md-3 form-group mb-3">
+                    <label>اسم المرفق:</label>
+                    <input class="form-control" type="text" name="attachment_name" value="<?php echo htmlspecialchars($currentRecord['attachment_name'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>المركز:</label>
+                    <select class="form-select form-control-lg shadow-sm" name="center">
+                        <option value="">اختر المركز</option>
+                        <option value="قنا" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "قنا") echo 'selected'; ?>>قنا</option>
+                        <option value="دشنا" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "دشنا") echo 'selected'; ?>>دشنا</option>
+                        <option value="نجع حمادي" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "نجع حمادي") echo 'selected'; ?>>نجع حمادي</option>
+                        <option value="قوص" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "قوص") echo 'selected'; ?>>قوص</option>
+                        <option value="قفط" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "قفط") echo 'selected'; ?>>قفط</option>
+                        <option value="ابوتشت" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "ابوتشت") echo 'selected'; ?>>ابوتشت</option>
+                        <option value="فرشوط" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "فرشوط") echo 'selected'; ?>>فرشوط</option>
+                        <option value="نقاده" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "نقاده") echo 'selected'; ?>>نقاده</option>
+                        <option value="الوقف" <?php if (isset($currentRecord['center']) && $currentRecord['center'] == "الوقف") echo 'selected'; ?>>الوقف</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>طريقة الدفع:</label>
+                    <select class="form-select form-control-lg shadow-sm" name="payment_method">
+                        <option value="">اختر نوع الدفع</option>
+                        <option value="pos" <?php if (isset($currentRecord['payment_method']) && $currentRecord['payment_method'] == "pos") echo 'selected'; ?>>pos</option>
+                        <option value="شيك" <?php if (isset($currentRecord['payment_method']) && $currentRecord['payment_method'] == "شيك") echo 'selected'; ?>>شيك</option>
+                        <option value="امردفع" <?php if (isset($currentRecord['payment_method']) && $currentRecord['payment_method'] == "امردفع") echo 'selected'; ?>>امردفع</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>رقم الدفع:</label>
+                    <input class="form-control" type="text" name="payment_number" value="<?php echo htmlspecialchars($currentRecord['payment_number'] ?? ''); ?>">
+                </div>
+            </div>
+
+            <!-- صف 4: المبلغ وتاريخ الدفع وتصنيف العميل وتاريخ العمل الميداني -->
+            <div class="row">
+                <div class="col-md-3 form-group mb-3">
+                    <label>المبلغ:</label>
+                    <input class="form-control" type="text" name="amount" value="<?php echo htmlspecialchars($currentRecord['amount'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>تاريخ الادخال:</label>
+                    <input class="form-control" type="date" name="entry_date" value="<?php echo htmlspecialchars($currentRecord['entry_date'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>تصنيف العميل:</label>
+                    <select class="form-select form-control-lg shadow-sm" name="customer_rating">
+                        <option value="">تصنيف العميل</option>
+                        <option value="جهه حكوميه" <?php if (isset($currentRecord['customer_rating']) && $currentRecord['customer_rating'] == "جهه حكوميه") echo 'selected'; ?>>جهه حكوميه</option>
+                        <option value="اهالي" <?php if (isset($currentRecord['customer_rating']) && $currentRecord['customer_rating'] == "اهالي") echo 'selected'; ?>>اهالي</option>
+                        <option value="شركات" <?php if (isset($currentRecord['customer_rating']) && $currentRecord['customer_rating'] == "شركات") echo 'selected'; ?>>شركات</option>
+                    </select>
+                </div>
+
+               
+            </div>
+
+            <!-- صف 5: رقم المعاملة والمساحة والطول -->
+            <div class="row">
+                <div class="col-md-3 form-group mb-3">
+                    <label>رقم معامله المركز التكنولجي:</label>
+                    <input class="form-control" type="text" name="transaction_number" value="<?php echo htmlspecialchars($currentRecord['transaction_number'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>المساحة:</label>
+                    <input class="form-control" type="text" name="the_space" value="<?php echo htmlspecialchars($currentRecord['the_space'] ?? ''); ?>">
+                </div>
+
+                <div class="col-md-3 form-group mb-3">
+                    <label>الطول:</label>
+                    <input class="form-control" type="text" name="height" value="<?php echo htmlspecialchars($currentRecord['height'] ?? ''); ?>">
+                </div>
+            </div>
+
+            <!-- صف 6: رفع مرفق -->
+            <div class="row">
+                <div class="col-md-3 form-group mb-3">
+                <label for="image">اختر صورة:</label>
+                <input class="form-control" type="file" name="images[]" multiple>
+            </div>
+            </div>
+
+            <!-- زر إرسال -->
+            <div class="row">
+                <div class="col-md-12">
+                    <button  name="send" type="submit" class="btn btn-primary w-100">إضافة البيانات</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+                  
+
+
+
+
+            <h5>ابحث برقم الطلب</h5>
+            <form action="" method="post">
+                <input type="number" name="id_to_search" placeholder="ابحث باستخدام ID">
+                <input class="btn btn-primary" type="submit" name="search" value="بحث">
+            </form>
+   
+
+                    
+
+
+
+
+
+
+        </div>
+
+
+
+
+        <h5>الطلبات التي لم تمرر<h5>
+        <?php if (count($records) > 0): ?>
+            <table border="1">
+                <tr>
+
+                    <th>رقم الطلب</th>
+                    <th>اسم العميل</th>
+                    <th>رقم التليفون</th>
+                    <th>المركز</th>
+                    <th>العنوان</th>
+                    <th>الحالة</th>
+                    <th>المساحه</th>
+
+
+
+                    <th>تغيير الحالة</th>
+                </tr>
+                <?php foreach ($records as $record): ?>
+                    <tr>
+                        <td><?php echo htmlspecialchars($record['id']); ?></td>
+                        <td><?php echo htmlspecialchars($record['customer_name']); ?></td>
+                        <td><?php echo htmlspecialchars($record['phone_number']); ?></td>
+                        <td><?php echo htmlspecialchars($record['center']); ?></td>
+                        <td><?php echo htmlspecialchars($record['address']); ?></td>
+                        <td><?php echo htmlspecialchars($record['status']); ?></td>
+                        <td><?php echo htmlspecialchars($record['the_space']); ?></td>
+
+
+
+
+                        <td>
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="display:inline;">
+                                <input type="hidden" name="id" value="<?php echo $record['id']; ?>">
+                                <input class="btn btn-primary" type="submit" value="تمرير الي العمل الميداني">
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php else: ?>
+            <div>لا توجد سجلات غير ممررة.</div>
+        <?php endif; ?>
+
+
+
+        <script>
+            function printSection() {
+                var printContents = document.body.innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+                window.print();
+                document.body.innerHTML = originalContents;
+            }
+        </script>
+
+
+
+    </body>
+
+    </html>
